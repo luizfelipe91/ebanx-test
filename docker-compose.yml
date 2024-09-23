@@ -1,0 +1,48 @@
+volumes:
+    pgadmindata:
+        driver: local
+    postgresdata:
+        driver: local
+    redisdata:
+        driver: local
+services:
+    php:
+        build:
+            context: './docker'
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/usr/src/app
+            - ./docker/supervisor:/etc/supervisor/conf.d
+        ports:
+            - "80:9000"
+        environment:
+            - OCTANE_WORKERS=1
+        networks:
+            - main-network
+        depends_on:
+            - redis
+            - postgres
+    postgres:
+        image: postgres
+        volumes:
+           - postgresdata:/var/lib/postgresql/data
+           - ./docker/postgres:/docker-entrypoint-initdb.d
+        environment:
+            - POSTGRES_DB=ebanx_test
+            - POSTGRES_USER=default
+            - POSTGRES_PASSWORD=secret
+        networks:
+            - main-network
+    redis:
+        image: redis/redis-stack
+        expose:
+            - "6379"
+        ports:
+            - "8001:8001"
+        networks:
+            - main-network
+        volumes:
+           - redisdata:/data
+networks:
+    main-network:
+        driver: bridge

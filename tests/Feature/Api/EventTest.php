@@ -80,6 +80,11 @@ class EventTest extends TestCase
             "amount" => 5
         ]);
 
-        dd($response->json());
+        $response->assertJsonFragment([
+            'origin' => [
+                'id' => $account->id,
+                'balance' => 15
+            ]
+        ]);
     }
 }

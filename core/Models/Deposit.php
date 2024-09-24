@@ -23,9 +23,4 @@ class Deposit extends Model
     {
         return $this->belongsTo(Account::class, 'destination');
     }
-
-    function isCashIn()
-    {
-        return true;
-    }
 }

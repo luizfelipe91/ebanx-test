@@ -87,4 +87,42 @@ class EventTest extends TestCase
             ]
         ]);
     }
+
+    public function test_it_cant_transfer_from_non_existing_account(): void
+    {
+        $response = $this->postJson('/api/event', [
+            "type" => "transfer",
+            "origin" => "200",
+            "amount" => 15,
+            "destination" => "300"
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    public function test_it_can_transfer_from_existing_account(): void
+    {
+        $account = Account::factory()->create();
+
+        $balance = new Balance($account->id);
+        $balance->increment(15);
+
+        $response = $this->postJson('/api/event', [
+            "type" => "transfer",
+            "origin" => strval($account->id),
+            "amount" => 15,
+            "destination" => "300"
+        ]);
+
+        $response->assertJsonFragment([
+            "origin" => [
+                "id" => strval($account->id),
+                "balance" => 0
+            ],
+            "destination" => [
+                "id" => "300",
+                "balance" => 15
+            ]
+        ]);
+    }
 }

@@ -15,7 +15,7 @@ class CreateTransfer implements EventInterface
         $account = Account::find($eventDTO->origin);
 
         if (!$account) {
-            abort(404);
+            return false;
         }
 
         $destinationAccount = $this->checkDestinationAccount($eventDTO->destination);

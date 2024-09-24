@@ -14,7 +14,7 @@ class FetchBalance
         $account = Account::find($accountDTO->getId());
 
         if (!$account) {
-            abort(404);
+            return response()->json(0, 404);
         }
 
         $balance = new Balance($account->id);

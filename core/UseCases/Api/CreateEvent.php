@@ -18,6 +18,10 @@ class CreateEvent
 
         $eventPerformed = $eventType->perform($eventDTO);
 
+        if (!$eventPerformed) {
+            return response()->json(0, 404);
+        }
+
         $event = $this->createEventByType($eventPerformed);
 
         return $event;

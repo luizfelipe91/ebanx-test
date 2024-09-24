@@ -17,7 +17,7 @@ class AccountTest extends TestCase
      */
     public function test_it_cant_fetch_account_balance_for_non_existing_account(): void
     {
-        $response = $this->getJson('/api/balance?account_id=1234');
+        $response = $this->getJson('/balance?account_id=1234');
 
         $response->assertStatus(404);
     }
@@ -29,7 +29,7 @@ class AccountTest extends TestCase
         $balance = new Balance($account->id);
         $balance->increment(10);
 
-        $response = $this->getJson("/api/balance?account_id=" . $account->id);
+        $response = $this->getJson("/balance?account_id=" . $account->id);
 
         $response->assertStatus(200);
         $this->assertEquals($response->json(), 10);

@@ -12,7 +12,7 @@ class AccountController extends Controller
     function fetchBalance(Request $request, FetchBalance $useCase)
     {
         $data = $request->validate([
-            'account_id' => 'required',
+            'account_id' => 'required'
         ]);
 
         $accountDTO = new AccountDTO;

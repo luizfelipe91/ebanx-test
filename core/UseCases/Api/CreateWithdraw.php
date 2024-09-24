@@ -7,13 +7,18 @@ use Core\Models\Account;
 use Core\Models\Deposit;
 use Core\Models\Withdraw;
 use Core\UseCases\Api\Interfaces\EventInterface;
+use Exception;
 
 class CreateWithdraw implements EventInterface
 {
 
     public function perform(EventDTO $eventDTO)
     {
-        $account = Account::findOrFail($eventDTO->origin);
+        $account = Account::find($eventDTO->origin);
+
+        if (!$account) {
+            abort(404);
+        }
 
         $withdraw = new Withdraw();
         $withdraw->amount = $eventDTO->getAmount();

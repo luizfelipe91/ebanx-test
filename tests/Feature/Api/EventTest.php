@@ -17,7 +17,7 @@ class EventTest extends TestCase
      */
     public function test_it_can_create_a_account_with_initial_balance(): void
     {
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "deposit",
             "destination" => "100",
             "amount" => 10
@@ -40,7 +40,7 @@ class EventTest extends TestCase
         $balance = new Balance($account->id);
         $balance->increment(10);
 
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "deposit",
             "destination" => strval($account->id),
             "amount" => 10
@@ -58,7 +58,7 @@ class EventTest extends TestCase
 
     public function test_it_cant_withdraw_from_non_existing_account(): void
     {
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "withdraw",
             "origin" => "200",
             "amount" => 10
@@ -74,7 +74,7 @@ class EventTest extends TestCase
         $balance = new Balance($account->id);
         $balance->increment(20);
 
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "withdraw",
             "origin" => strval($account->id),
             "amount" => 5
@@ -90,7 +90,7 @@ class EventTest extends TestCase
 
     public function test_it_cant_transfer_from_non_existing_account(): void
     {
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "transfer",
             "origin" => "200",
             "amount" => 15,
@@ -107,7 +107,7 @@ class EventTest extends TestCase
         $balance = new Balance($account->id);
         $balance->increment(15);
 
-        $response = $this->postJson('/api/event', [
+        $response = $this->postJson('/event', [
             "type" => "transfer",
             "origin" => strval($account->id),
             "amount" => 15,

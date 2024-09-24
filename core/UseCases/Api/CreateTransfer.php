@@ -12,7 +12,11 @@ class CreateTransfer implements EventInterface
 
     public function perform(EventDTO $eventDTO)
     {
-        $account = Account::findOrFail($eventDTO->origin);
+        $account = Account::find($eventDTO->origin);
+
+        if (!$account) {
+            abort(404);
+        }
 
         $destinationAccount = $this->checkDestinationAccount($eventDTO->destination);
 

@@ -55,4 +55,31 @@ class EventTest extends TestCase
             ]
         ]);
     }
+
+    public function test_it_cant_withdraw_from_non_existing_account(): void
+    {
+        $response = $this->postJson('/api/event', [
+            "type" => "withdraw",
+            "origin" => "200",
+            "amount" => 10
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    public function test_it_can_withdraw_from_existing_account(): void
+    {
+        $account = Account::factory()->create();
+
+        $balance = new Balance($account->id);
+        $balance->increment(20);
+
+        $response = $this->postJson('/api/event', [
+            "type" => "withdraw",
+            "origin" => strval($account->id),
+            "amount" => 5
+        ]);
+
+        dd($response->json());
+    }
 }

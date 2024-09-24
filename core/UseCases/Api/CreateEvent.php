@@ -5,6 +5,7 @@ namespace Core\UseCases\Api;
 use Core\DTO\EventDTO;
 use Core\Models\Deposit;
 use Core\Models\Event;
+use Core\Models\Withdraw;
 use Exception;
 
 class CreateEvent
@@ -27,6 +28,10 @@ class CreateEvent
             return new CreateDeposit;
         }
 
+        if ($event === 'withdraw') {
+            return new CreateWithdraw;
+        }
+
         throw new Exception("Invalid event type");
     }
 
@@ -34,6 +39,11 @@ class CreateEvent
     {
         if ($eventPerformed instanceof Deposit) {
             $event = new CreateDepositEvent;
+            return $event->handle($eventPerformed);
+        }
+
+        if ($eventPerformed instanceof Withdraw) {
+            $event = new CreateWithdrawEvent;
             return $event->handle($eventPerformed);
         }
 

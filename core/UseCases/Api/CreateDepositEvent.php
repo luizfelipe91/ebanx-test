@@ -22,7 +22,7 @@ class CreateDepositEvent
 
         return response()->json([
             "destination" => [
-                "id" => $event->account_id,
+                "id" => strval($event->account_id),
                 "balance" => $balance->get()
             ]
         ], 201);

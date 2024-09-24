@@ -27,7 +27,7 @@ class EventTest extends TestCase
 
         $response->assertJsonFragment([
             'destination' => [
-                'id' => 100,
+                'id' => "100",
                 'balance' => 10
             ]
         ]);
@@ -50,7 +50,7 @@ class EventTest extends TestCase
 
         $response->assertJsonFragment([
             'destination' => [
-                'id' => $account->id,
+                'id' => strval($account->id),
                 'balance' => 20
             ]
         ]);
@@ -82,7 +82,7 @@ class EventTest extends TestCase
 
         $response->assertJsonFragment([
             'origin' => [
-                'id' => $account->id,
+                'id' => strval($account->id),
                 'balance' => 15
             ]
         ]);

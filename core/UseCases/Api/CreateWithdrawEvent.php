@@ -24,7 +24,7 @@ class CreateWithdrawEvent
 
         return response()->json([
             "origin" => [
-                "id" => $event->account_id,
+                "id" => strval($event->account_id),
                 "balance" => $balance->get()
             ]
         ], 201);

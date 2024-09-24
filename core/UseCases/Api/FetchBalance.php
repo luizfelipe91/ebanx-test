@@ -11,7 +11,11 @@ class FetchBalance
 
     public function handle(AccountDTO $accountDTO)
     {
-        $account = Account::findOrFail($accountDTO->getId());
+        $account = Account::find($accountDTO->getId());
+
+        if (!$account) {
+            return response()->json(0, 404);
+        }
 
         $balance = new Balance($account->id);
         return $balance->get();
